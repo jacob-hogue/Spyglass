@@ -39,6 +39,15 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional shadow for depth */
     }
 
+    #credit {
+            font-size: 14px; /* Smaller font size for credit */
+            position: absolute; /* Position it in the bottom right */
+            bottom: 10px; /* Position it at the bottom */
+            right: 10px; /* Position it at the right */
+            color: white; /* Color for credit text */
+            z-index: 10; /* Ensure it appears above the map */
+        }
+
     #messageDiv {
     margin-left: 10px;
     background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background */
@@ -70,5 +79,7 @@
         <span id="radiusValue">100000</span> <!-- Display the current radius -->
     </div>
     <div id="viewDiv"></div>
+    <div id="credit">© 2024 Jacob Hogue</div> <!-- Credit text at the bottom -->
+
 </body>
 </html>
