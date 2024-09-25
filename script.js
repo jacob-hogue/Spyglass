@@ -147,28 +147,29 @@ require([
     });
 
     // Mouse click event to zoom to the extent of the spyglass
-        view.on("click", function (event) {
-          const mapPoint = view.toMap(event);
-          const mainCircle = createMainCircle(mapPoint);
-          const zoomExtent = mainCircle.geometry.extent;
+    view.on("click", function (event) {
+        const mapPoint = view.toMap(event);
+        const mainCircle = createMainCircle(mapPoint);
+        const zoomExtent = mainCircle.geometry.extent;
 
-          // Zoom to the new extent
-          view.goTo({
+        // Zoom to the new extent
+        view.goTo({
             target: zoomExtent,
             zoom: view.zoom + 4, // Adjust zoom level as needed
-          });
         });
+    });
 
-// Inside your existing script
-const icon = document.getElementById('icon');
-const messageDiv = document.getElementById('messageDiv');
+    // Inside your existing script
+    const icon = document.getElementById('icon');
+    const messageDiv = document.getElementById('messageDiv');
 
-icon.addEventListener('click', function () {
-    if (messageDiv.style.display === 'none' || messageDiv.style.display === '') {
-        messageDiv.style.display = 'block'; // Show the message
-        icon.innerHTML = '-'; // Change to minus icon
-    } else {
-        messageDiv.style.display = 'none'; // Hide the message
-        icon.innerHTML = '+'; // Change to plus icon
-    }
-});
+    icon.addEventListener('click', function () {
+        if (messageDiv.style.display === 'none' || messageDiv.style.display === '') {
+            messageDiv.style.display = 'block'; // Show the message
+            icon.innerHTML = '-'; // Change to minus icon
+        } else {
+            messageDiv.style.display = 'none'; // Hide the message
+            icon.innerHTML = '+'; // Change to plus icon
+        }
+    });
+}); // <- Closing bracket added here
