@@ -6,9 +6,7 @@ require([
     "esri/layers/GraphicsLayer",
     "esri/layers/GroupLayer",
     "esri/geometry/Circle",
-    "esri/request",
     "esri/geometry/Point",
-    "esri/widgets/Expand"
 ], function (
     Map,
     MapView,
@@ -17,9 +15,7 @@ require([
     GraphicsLayer,
     GroupLayer,
     Circle,
-    esriRequest,
     Point,
-    Expand
 ) {
     // Firefly imagery layer
     const worldImagery = new TileLayer({
