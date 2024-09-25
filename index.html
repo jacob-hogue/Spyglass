@@ -17,25 +17,39 @@
             height: 100%;
             width: 100%;
         }
-        #messageContainer {
-            position: absolute;
-            top: 10px; /* Align it to the top */
-            left: 70px; /* Shift it over to the right */
-            z-index: 10; /* Ensure it appears above the map */
-            display: flex;
-            align-items: center;
-            cursor: pointer; /* Pointer cursor for the icon */
+    #messageContainer {
+    position: absolute;
+    top: 10px; /* Align it to the top */
+    left: 70px; /* Shift it over to the right */
+    z-index: 10; /* Ensure it appears above the map */
+    display: flex;
+    align-items: center;
         }
-        #messageDiv {
-            margin-left: 10px;
-            background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background */
-            padding: 10px;
-            border-radius: 5px; /* Rounded corners */
-            display: none; /* Hidden by default */
-        }
-        #icon {
-            font-size: 24px; /* Adjust size of the icon */
-        }
+
+    #icon {
+    width: 40px; /* Set a fixed width for the icon */
+    height: 40px; /* Set a fixed height for the icon */
+    border-radius: 50%; /* Make it circular */
+    background-color: white; /* Background color of the bubble */
+    display: flex;
+    align-items: center; /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+    font-size: 24px; /* Adjust size of the icon */
+    cursor: pointer; /* Pointer cursor for the icon */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional shadow for depth */
+    }
+
+    #messageDiv {
+    margin-left: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    display: none; /* Hidden by default */
+    position: absolute; /* Position it relative to the container */
+    top: 0; /* Align it with the icon */
+    left: 50px; /* Position next to the icon */
+    z-index: 10; /* Ensure it appears above the map */
+    }
     </style>
 </head>
 <body>
