@@ -159,6 +159,20 @@ require([
                 });
             });
 
+            // Inside your existing script
+    const icon = document.getElementById('icon');
+    const messageDiv = document.getElementById('messageDiv');
+
+    icon.addEventListener('click', function () {
+        if (messageDiv.style.display === 'none' || messageDiv.style.display === '') {
+            messageDiv.style.display = 'block'; // Show the message
+            icon.innerHTML = '-'; // Change to minus icon
+        } else {
+            messageDiv.style.display = 'none'; // Hide the message
+            icon.innerHTML = '+'; // Change to plus icon
+        }
+    });
+
             // Update the radius when the input value changes
             const radiusInput = document.getElementById('radius');
             const radiusValue = document.getElementById('radiusValue');
