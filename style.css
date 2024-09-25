@@ -15,12 +15,6 @@ body {
     z-index: 10; /* Ensure it appears above the map */
 }
 
-#titleBar h1 {
-    margin: 0; /* Remove default margin */
-    font-size: 24px; /* Adjust as needed */
-    font-weight: bold; /* Bold font */
-}
-
 #websiteCredit {
     font-size: 12px; /* Smaller font size for the credit */
     position: absolute; /* Position it in the top right */
