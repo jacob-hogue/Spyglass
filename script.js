@@ -147,15 +147,29 @@ require([
     });
 
     // Mouse click event to zoom to the extent of the spyglass
-    view.on("click", function (event) {
-        const mapPoint = view.toMap(event);
-        const mainCircle = createMainCircle(mapPoint);
-        const zoomExtent = mainCircle.geometry.extent;
+        view.on("click", function (event) {
+          const mapPoint = view.toMap(event);
+          const mainCircle = createMainCircle(mapPoint);
+          const zoomExtent = mainCircle.geometry.extent;
 
-        // Zoom to the new extent
-        view.goTo({
+          // Zoom to the new extent
+          view.goTo({
             target: zoomExtent,
             zoom: view.zoom + 4, // Adjust zoom level as needed
+          });
         });
-    });
-});
+
+        // Expand/collapse message div
+        const messageDiv = document.getElementById("messageDiv");
+        const icon = document.getElementById("icon");
+        
+        document.getElementById("messageContainer").onclick = function () {
+          if (messageDiv.style.display === "none" || messageDiv.style.display === "") {
+            messageDiv.style.display = "block"; // Show the message
+            icon.textContent = "-"; // Change icon to minus
+          } else {
+            messageDiv.style.display = "none"; // Hide the message
+            icon.textContent = "+"; // Change icon to plus
+          }
+        };
+      });
