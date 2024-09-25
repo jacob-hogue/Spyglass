@@ -159,17 +159,16 @@ require([
           });
         });
 
-        // Expand/collapse message div
-        const messageDiv = document.getElementById("messageDiv");
-        const icon = document.getElementById("icon");
-        
-        document.getElementById("messageContainer").onclick = function () {
-          if (messageDiv.style.display === "none" || messageDiv.style.display === "") {
-            messageDiv.style.display = "block"; // Show the message
-            icon.textContent = "-"; // Change icon to minus
-          } else {
-            messageDiv.style.display = "none"; // Hide the message
-            icon.textContent = "+"; // Change icon to plus
-          }
-        };
-      });
+// Inside your existing script
+const icon = document.getElementById('icon');
+const messageDiv = document.getElementById('messageDiv');
+
+icon.addEventListener('click', function () {
+    if (messageDiv.style.display === 'none' || messageDiv.style.display === '') {
+        messageDiv.style.display = 'block'; // Show the message
+        icon.innerHTML = '-'; // Change to minus icon
+    } else {
+        messageDiv.style.display = 'none'; // Hide the message
+        icon.innerHTML = '+'; // Change to plus icon
+    }
+});
