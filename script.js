@@ -87,11 +87,11 @@ require([
         });
     }
 
-    const outerCircleRadius = spyglassRadius * 1.05; // 5% larger than the inner circle
-    const outerCircle = new Circle({
-        center: mapPoint,
-        radius: outerCircleRadius, // Use the updated radius
-    });
+    function createOuterCircle(mapPoint) {
+        const outerCircle = new Circle({
+            center: mapPoint,
+            radius: spyglassRadius + 5000, // Slightly larger radius for the outer effect
+        });
 
         const outerSymbol = {
             type: "simple-fill",
