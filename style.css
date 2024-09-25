@@ -1,8 +1,22 @@
 /* style.css */
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Set the body font */
+}
+#titleBar {
+    background-color: #333; /* Dark gray background */
+    color: #f8f8f8; /* Off-white text */
+    text-align: center; /* Center the text */
+    padding: 15px; /* Add some padding */
+    font-size: 24px; /* Font size for title */
+    font-weight: bold; /* Bold font */
+    position: relative; /* Position for layout */
+    z-index: 10; /* Ensure it appears above the map */
+}
+#viewDiv {
+    height: 100vh; /* Full height of the viewport */
+    margin-top: 0; /* Remove margin */
 }
 
 #messageDiv {
