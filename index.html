@@ -18,15 +18,20 @@
         width: 100%;
       }
       #messageDiv {
+        position: absolute; /* Make it position absolute */
+        top: 0; /* Align it to the top */
+        left: 0; /* Align it to the left */
         padding-left: 10px;
         padding-right: 10px;
+        background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background */
+        z-index: 10; /* Ensure it appears above the map */
       }
     </style>
 </head>
 <body>
-    <div id="messageDiv" class="esri-widget esri-heading">
-        <h4 class="esri-heading">Hover over the map to reveal imagery with a spyglass effect</h4>
     <div id="viewDiv"></div>
+     <div id="messageDiv" class="esri-widget esri-heading">
+        <h4 class="esri-heading">Hover over the map to reveal imagery with a spyglass effect</h4>
     </div>
 </body>
 </html>
