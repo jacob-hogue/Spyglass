@@ -1,78 +1,9 @@
-require([
-    "esri/Map",
-    "esri/views/MapView",
-    "esri/layers/TileLayer",
-    "esri/Graphic",
-    "esri/layers/GraphicsLayer",
-    "esri/layers/GroupLayer",
-    "esri/geometry/Circle",
-    "esri/geometry/Point",
-], function (
-    Map,
-    MapView,
-    TileLayer,
-    Graphic,
-    GraphicsLayer,
-    GroupLayer,
-    Circle,
-    Point,
-) {
-    // Firefly imagery layer
-    const worldImagery = new TileLayer({
-        portalItem: {
-            id: "a66bfb7dd3b14228bf7ba42b138fe2ea",
-        },
-    });
-
-    worldImagery.when(() => {
-        worldImagery.sublayers.forEach((layer) => {
-            layer.popupEnabled = false; // Disable popups for sublayers
-        });
-    });
-
-    const tileLayer = new TileLayer({
-        portalItem: {
-            id: "10df2279f9684e4a9f6a7f08febac2a9", // world imagery
-        },
-    });
-
-    tileLayer.when(() => {
-        tileLayer.sublayers.forEach((layer) => {
-            layer.popupEnabled = false; // Disable popups for sublayers
-        });
-    });
-
-    const graphicsLayer = new GraphicsLayer({
-        blendMode: "destination-in", // Show only what overlaps with the circles
-    });
-
-    const groupLayer = new GroupLayer({
-        layers: [tileLayer, graphicsLayer],
-        opacity: 1, // Start fully visible
-    });
-
-    const map = new Map({
-        layers: [worldImagery, groupLayer],
-    });
-
-    const view = new MapView({
-        container: "viewDiv",
-        map: map,
-        zoom: 4,
-        center: [-95.712891, 37.09024],
-        constraints: {
-            snapToZoom: false,
-            minScale: 147914381,
-        },
-    });
-
-    let mainCircleGraphic = null; // Main spyglass inner circle
-    let outerCircleGraphic = null; // Outer spyglass border circle
+let spyglassRadius = 100000; // Initial radius in meters
 
     function createMainCircle(mapPoint) {
         const mainCircle = new Circle({
             center: mapPoint,
-            radius: 100000, // 100,000 meters
+            radius: spyglassRadius, // Use the current radius
         });
 
         const mainSymbol = {
@@ -90,7 +21,7 @@ require([
     function createOuterCircle(mapPoint) {
         const outerCircle = new Circle({
             center: mapPoint,
-            radius: 105000, // Slightly larger radius than the main circle for the border effect
+            radius: spyglassRadius + 5000, // Slightly larger radius for the outer effect
         });
 
         const outerSymbol = {
@@ -159,17 +90,12 @@ require([
         });
     });
 
-    // Inside your existing script
-    const icon = document.getElementById('icon');
-    const messageDiv = document.getElementById('messageDiv');
+    // Update the radius when the input value changes
+    const radiusInput = document.getElementById('radius');
+    const radiusValue = document.getElementById('radiusValue');
 
-    icon.addEventListener('click', function () {
-        if (messageDiv.style.display === 'none' || messageDiv.style.display === '') {
-            messageDiv.style.display = 'block'; // Show the message
-            icon.innerHTML = '-'; // Change to minus icon
-        } else {
-            messageDiv.style.display = 'none'; // Hide the message
-            icon.innerHTML = '+'; // Change to plus icon
-        }
+    radiusInput.addEventListener('input', function () {
+        spyglassRadius = parseInt(this.value, 10); // Update the radius
+        radiusValue.textContent = this.value; // Display the current radius
     });
-}); // <- Closing bracket added here
+});
