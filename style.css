@@ -14,11 +14,6 @@ body {
     position: relative; /* Position for layout */
     z-index: 10; /* Ensure it appears above the map */
 }
-#viewDiv {
-    height: 100vh; /* Full height of the viewport */
-    margin-top: 0; /* Remove margin */
-}
-
 .esri-heading {
     color: #333;
 }
