@@ -4,27 +4,6 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif; /* Set the body font */
 }
-#titleBar {
-    background-color: #333; /* Dark gray background */
-    color: #f8f8f8; /* Off-white text */
-    text-align: center; /* Center the text */
-    padding: 15px; /* Add some padding */
-    font-size: 24px; /* Font size for title */
-    font-weight: bold; /* Bold font */
-    position: relative; /* Position for layout */
-    z-index: 10; /* Ensure it appears above the map */
-}
-
-#radiusControl {
-            position: absolute;
-            top: 60px; /* Adjust the position below the title bar */
-            left: 50%; /* Center it horizontally */
-            transform: translateX(-50%); /* Center it using transform */
-            z-index: 10; /* Ensure it appears above the map */
-            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-            padding: 10px;
-            border-radius: 5px; /* Rounded corners */
-        }
 
 .esri-heading {
     color: #333;
