@@ -1,127 +1,133 @@
 // script.js
 
 require([
-    "esri/Map",
-    "esri/views/MapView",
-    "esri/layers/TileLayer",
-    "esri/Graphic",
-    "esri/layers/GraphicsLayer",
-    "esri/layers/GroupLayer",
-    "esri/geometry/Circle",
-    "esri/widgets/BasemapGallery",
-    "esri/widgets/Expand"
-], function (
-    Map,
-    MapView,
-    TileLayer,
-    Graphic,
-    GraphicsLayer,
-    GroupLayer,
-    Circle,
-    BasemapGallery,
-    Expand
-) {
-    // Initialize your map and layers (the same as your original code)
-    const worldImagery = new TileLayer({
-        portalItem: {
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/TileLayer",
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer",
+        "esri/layers/GroupLayer",
+        "esri/geometry/Circle",
+        "esri/request",
+        "esri/geometry/Point",
+        "esri/widgets/Widget",
+        "esri/widgets/Expand"
+      ], function (
+        Map,
+        MapView,
+        TileLayer,
+        Graphic,
+        GraphicsLayer,
+        GroupLayer,
+        Circle,
+        esriRequest,
+        Point,
+        Widget,
+        Expand
+      ) {
+        // Firefly imagery layer
+        const worldImagery = new TileLayer({
+          portalItem: {
             id: "a66bfb7dd3b14228bf7ba42b138fe2ea",
-        },
-    });
+          },
+        });
 
-    const tileLayer = new TileLayer({
-        portalItem: {
-            id: "10df2279f9684e4a9f6a7f08febac2a9",
-        },
-    });
+        worldImagery.when(() => {
+          worldImagery.sublayers.forEach((layer) => {
+            layer.popupEnabled = false; // Disable popups for sublayers
+          });
+        });
 
-    const graphicsLayer = new GraphicsLayer({
-        blendMode: "destination-in",
-    });
+        const tileLayer = new TileLayer({
+          portalItem: {
+            id: "10df2279f9684e4a9f6a7f08febac2a9", // world imagery
+          },
+        });
 
-    const groupLayer = new GroupLayer({
-        layers: [tileLayer, graphicsLayer],
-        opacity: 1,
-    });
+        tileLayer.when(() => {
+          tileLayer.sublayers.forEach((layer) => {
+            layer.popupEnabled = false; // Disable popups for sublayers
+          });
+        });
 
-    const map = new Map({
-        layers: [worldImagery, groupLayer],
-    });
+        const graphicsLayer = new GraphicsLayer({
+          blendMode: "destination-in", // Show only what overlaps with the circles
+        });
 
-    const view = new MapView({
-        container: "viewDiv",
-        map: map,
-        zoom: 4,
-        center: [-95.712891, 37.09024],
-        constraints: {
+        const groupLayer = new GroupLayer({
+          layers: [tileLayer, graphicsLayer],
+          opacity: 1, // Start fully visible
+        });
+        
+        // in this case the portalItem has to be a webmap
+
+        const map = new Map({
+          layers: [worldImagery,groupLayer],
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [-95.712891, 37.09024],
+          constraints: {
             snapToZoom: false,
             minScale: 147914381,
-        },
-    });
-
-    const basemapGallery = new BasemapGallery({
-        view: view,
-        container: document.createElement("div"),
-    });
-
-    const expand = new Expand({
-        view: view,
-        content: basemapGallery,
-        expanded: false,
-    });
-
-    view.ui.add(expand, "top-right");
-
-    let mainCircleGraphic = null;
-    let outerCircleGraphic = null;
-
-    function createMainCircle(mapPoint) {
-        const mainCircle = new Circle({
-            center: mapPoint,
-            radius: 100000,
+          },
         });
+        
+        let mainCircleGraphic = null; // Main spyglass inner circle
+        let outerCircleGraphic = null; // Outer spyglass border circle
 
-        const mainSymbol = {
+        function createMainCircle(mapPoint) {
+          const mainCircle = new Circle({
+            center: mapPoint,
+            radius: 100000, // 100,000 meters
+          });
+
+          const mainSymbol = {
             type: "simple-fill",
-            color: "rgba(255, 255, 255, 1)",
-            outline: null,
-        };
+            color: "rgba(255, 255, 255, 1)", // Original transparent white for the fill
+            outline: null, // No outline for the inner circle
+          };
 
-        return new Graphic({
+          return new Graphic({
             geometry: mainCircle,
             symbol: mainSymbol,
-        });
-    }
+          });
+        }
 
-    function createOuterCircle(mapPoint) {
-        const outerCircle = new Circle({
+        function createOuterCircle(mapPoint) {
+          const outerCircle = new Circle({
             center: mapPoint,
-            radius: 105000,
-        });
+            radius: 105000, // Slightly larger radius than the main circle for the border effect
+          });
 
-        const outerSymbol = {
+          const outerSymbol = {
             type: "simple-fill",
-            color: [0, 0, 0, 0],
+            color: [0, 0, 0, 0], // Fully transparent fill for the outer circle
             outline: {
-                color: [255, 255, 255, 0.7],
-                width: 10,
+              color: [255, 255, 255, 0.7], // Semi-transparent white outline
+              width: 10, // Thick outline to mimic the spyglass border
             },
-        };
+          };
 
-        return new Graphic({
+          return new Graphic({
             geometry: outerCircle,
             symbol: outerSymbol,
-        });
-    }
+          });
+        }
 
-    view.on("pointer-move", function (event) {
-        const mapPoint = view.toMap(event);
+        // Mouse move event to make the circles follow the mouse
+        view.on("pointer-move", function (event) {
+          const mapPoint = view.toMap(event);
 
-        if (mapPoint) {
+          if (mapPoint) {
             if (mainCircleGraphic) {
-                graphicsLayer.remove(mainCircleGraphic);
+              graphicsLayer.remove(mainCircleGraphic);
             }
             if (outerCircleGraphic) {
-                graphicsLayer.remove(outerCircleGraphic);
+              graphicsLayer.remove(outerCircleGraphic);
             }
 
             mainCircleGraphic = createMainCircle(mapPoint);
@@ -132,31 +138,34 @@ require([
 
             worldImagery.effect = "blur(8px) brightness(1.2) grayscale(0.8)";
             groupLayer.effect = "brightness(1.5) drop-shadow(0px 0px 12px white)";
-        }
-    });
+          }
+        });
 
-    view.on("pointer-leave", function () {
-        if (mainCircleGraphic) {
+        // Reset the effects when the mouse leaves the map
+        view.on("pointer-leave", function () {
+          if (mainCircleGraphic) {
             graphicsLayer.remove(mainCircleGraphic);
             mainCircleGraphic = null;
-        }
-        if (outerCircleGraphic) {
+          }
+          if (outerCircleGraphic) {
             graphicsLayer.remove(outerCircleGraphic);
             outerCircleGraphic = null;
-        }
+          }
 
-        worldImagery.effect = null;
-        groupLayer.effect = null;
-    });
-
-    view.on("click", function (event) {
-        const mapPoint = view.toMap(event);
-        const mainCircle = createMainCircle(mapPoint);
-        const zoomExtent = mainCircle.geometry.extent;
-
-        view.goTo({
-            target: zoomExtent,
-            zoom: view.zoom + 1,
+          worldImagery.effect = null;
+          groupLayer.effect = null;
         });
-    });
-});
+
+        // Mouse click event to zoom to the extent of the spyglass
+        view.on("click", function (event) {
+          const mapPoint = view.toMap(event);
+          const mainCircle = createMainCircle(mapPoint);
+          const zoomExtent = mainCircle.geometry.extent;
+
+          // Zoom to the new extent
+          view.goTo({
+            target: zoomExtent,
+            zoom: view.zoom + 4, // Adjust zoom level as needed
+          });
+        });
+      });
