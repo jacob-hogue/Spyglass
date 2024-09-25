@@ -73,10 +73,14 @@
         }
 
         #radiusControl {
-            position: absolute; /* Position control on top of the map */
-            top: 60px; /* Adjust as needed */
-            left: 10px; /* Align to the left */
+            position: absolute;
+            top: 60px; /* Adjust the position below the title bar */
+            left: 50%; /* Center it horizontally */
+            transform: translateX(-50%); /* Center it using transform */
             z-index: 10; /* Ensure it appears above the map */
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            padding: 10px;
+            border-radius: 5px; /* Rounded corners */
         }
     </style>
 </head>
